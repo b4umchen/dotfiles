@@ -1,46 +1,16 @@
+export TERM="xterm-256color"
+POWERLEVEL9K_MODE='awesome-patched'
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block, everything else may go below.
+# confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/bin:/usr/local/bin:/sbin:/usr/sbin:$PATH
-export PATH=/usr/local/share/npm/bin:$PATH
-
-# Path to your oh-my-zsh installation.
 export ZSH="/Users/b4umchen/.oh-my-zsh"
 
-# Tmux
-#ZSH_TMUX_AUTOSTART='true'
-ZSH_TMUX_FIXTERM='$TERM'
-ZSH_TMUX_FIXTERM_WITH_256COLOR='screen-256color'
-
-plugins=(
-  git
-  tmux
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-  zsh-completions
-)
-# Completions 
-autoload -U compinit && compinit
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-export MANPATH="/usr/local/man:$MANPATH"
-
-# Enable the addition of zsh hook functions
-autoload -U add-zsh-hook
-
-# ssh
-export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-# Set the tab title to the current working directory before each prompt
+# Tab Titel
 function tabTitle () {
   window_title="\033]0;${PWD##*/}\007"
 echo -ne "$window_title"
@@ -49,10 +19,31 @@ echo -ne "$window_title"
 # Theme
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# Rest
+# open VSCode im Terminal mit "code ." (öffnet den Ordner in dem man sich befindet)
+function code {
+    if [[ $# = 0 ]]
+    then
+        open -a "Visual Studio Code"
+    else
+        local argPath="$1"
+        [[ $1 = /* ]] && argPath="$1" || argPath="$PWD/${1#./}"
+        open -a "Visual Studio Code" "$argPath"
+    fi
+}
 
-# source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Tmux
+#ZSH_TMUX_AUTOSTART='true'
+ZSH_TMUX_FIXTERM='$TERM'
+ZSH_TMUX_FIXTERM_WITH_256COLOR='screen-256color'
+
+# PlugIn
+plugins=(
+	tmux
+	git
+	zsh-autosuggestions
+	zsh-completions
+	zsh-syntax-highlighting
+)
 
 # Git Aliases
 alias gi="git init"
@@ -77,34 +68,18 @@ alias v="nvim"
 alias vi="nvim"
 alias init="nvim ~/.vimrc"
 
+# tmux
+alias b4umchen="tmux -2 new-session -s b4umchen"
+
 # weitere Aliases
 alias python=/usr/local/bin/python3.7
 alias pip=/usr/local/bin/pip3
 
-# open vscode
-function code {
-    if [[ $# = 0 ]]
-    then
-        open -a "Visual Studio Code"
-    else
-        local argPath="$1"
-        [[ $1 = /* ]] && argPath="$1" || argPath="$PWD/${1#./}"
-        open -a "Visual Studio Code" "$argPath"
-    fi
-}
+source $ZSH/oh-my-zsh.sh
 
-export PATH="/usr/local/opt/libxslt/bin:$PATH"
-export PATH="$PATH:`yarn global bin`"
-#eval "$(rbenv init -)"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-source /Users/b4umchen/.bash_profile
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
