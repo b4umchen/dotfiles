@@ -1,1 +1,1 @@
-.vimrc
+/Users/b4umchen/dev/dotfiles/vim/.vimrc
