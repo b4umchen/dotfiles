@@ -57,6 +57,7 @@ alias shakebox="cd ~/dev/shakebox/"
 # rails
 alias update="bundle install && rails db:migrate && yarn install && npm install"
 alias run="foreman start"
+alias public="rm -R public/packs/ && yarn install && npm i && bundle install && bundle exec rails assets:clean && RAILS_ENV=production bundle exec rails assets:precompile && RAILS_ENV=production bundle exec rails db:create db:migrate && rails s --early-hints -e production -b 'ssl://0.0.0.0:443?key=public/keys/local.key&cert=public/keys/local.pem'"
 
 # zsh
 alias zshrc="nvim ~/.zshrc"
@@ -83,3 +84,5 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 . /usr/local/opt/asdf/asdf.sh
 
 . /usr/local/opt/asdf/etc/bash_completion.d/asdf.bash
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
